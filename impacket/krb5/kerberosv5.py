@@ -367,7 +367,7 @@ def getKerberosTGT(clientName, password, domain, lmhash, nthash, aesKey='', kdcH
     return tgt, cipher, key, sessionKey
 
 def getKerberosTGS(serverName, domain, kdcHost, tgt, cipher, sessionKey, renew = False):
-
+    LOG.info("[+] Debugging purposes")
     # Decode the TGT
     try:
         decodedTGT = decoder.decode(tgt, asn1Spec = AS_REP())[0]
@@ -481,9 +481,11 @@ def getKerberosTGS(serverName, domain, kdcHost, tgt, cipher, sessionKey, renew =
         # Yes.. bye bye
         return r, cipher, sessionKey, newSessionKey
     else:
-        # Let's extract the Ticket, change the domain and keep asking
-        domain = spn.components[1]
-        return getKerberosTGS(serverName, domain, kdcHost, r, cipher, newSessionKey)
+        new_domain = spn.components[1]
+        if new_domain != domain:
+            print("Referral TGT's domain(%s) is different from %s",domain,new_domain)
+            kdcHost = input("enter KDC IP")
+        return getKerberosTGS(serverName, new_domain, kdcHost, r, cipher, newSessionKey)
 
 ################################################################################
 # DCE RPC Helpers
