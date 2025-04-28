@@ -51,6 +51,7 @@ except NotImplementedError:
     pass
 
 def sendReceive(data, host, kdcHost, port=88):
+    LOG.info("[+] Debugging local dev env")
     if kdcHost is None:
         targetHost = host
     else:
