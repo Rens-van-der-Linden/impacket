@@ -57,10 +57,6 @@ def sendReceive(data, host, kdcHost, port=88):
         targetHost = kdcHost
 
     messageLen = struct.pack('!i', len(data))
-    LOG.info('Target Host is currently: %s' % targetHost)
-    LOG.info('Please specify the new target host you want to go to')
-    targetHost = input()
-    LOG.info('Target Host is now: %s' % targetHost)
     LOG.debug('Trying to connect to KDC at %s:%s' % (targetHost, port))
     try:
         af, socktype, proto, canonname, sa = socket.getaddrinfo(targetHost, port, 0, socket.SOCK_STREAM)[0]
@@ -370,7 +366,10 @@ def getKerberosTGT(clientName, password, domain, lmhash, nthash, aesKey='', kdcH
     return tgt, cipher, key, sessionKey
 
 def getKerberosTGS(serverName, domain, kdcHost, tgt, cipher, sessionKey, renew = False):
-
+    LOG.info('Domain is currently: %s' % domain)
+    LOG.info('Please input the domain you want to use from now on: ')
+    domain = input()
+    LOG.info('Domain is now set to: %s' % domain)
     # Decode the TGT
     try:
         decodedTGT = decoder.decode(tgt, asn1Spec = AS_REP())[0]
