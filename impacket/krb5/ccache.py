@@ -416,6 +416,8 @@ class CCache:
 
     def getCredential(self, server, anySPN=True):
         for c in self.credentials:
+            LOG.info('Credentials found in cache for: %s' % c['server'].prettyPrint().upper())
+            LOG.info('Another debug statement here: %s' % c['server'].prettyPrint().upper().split(b'@')[0])
             if c['server'].prettyPrint().upper() == b(server.upper()) or c['server'].prettyPrint().upper().split(b'@')[0] == b(server.upper())\
                     or c['server'].prettyPrint().upper().split(b'@')[0] == b(server.upper().split('@')[0]):
                 LOG.debug('Returning cached credential for %s' % c['server'].prettyPrint().upper().decode('utf-8'))
