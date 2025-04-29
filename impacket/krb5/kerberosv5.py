@@ -376,7 +376,7 @@ def getKerberosTGS(serverName, domain, kdcHost, tgt, cipher, sessionKey, renew =
         decodedTGT = decoder.decode(tgt, asn1Spec = AS_REP())[0]
     except:
         decodedTGT = decoder.decode(tgt, asn1Spec = TGS_REP())[0]
-
+    LOG.info('Domain in getKerberosTGS is: %s' % domain.upper())
     domain = domain.upper()
     # Extract the ticket from the TGT
     ticket = Ticket()
