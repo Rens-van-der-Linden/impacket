@@ -376,7 +376,6 @@ def getKerberosTGS(serverName, domain, kdcHost, tgt, cipher, sessionKey, renew =
         decodedTGT = decoder.decode(tgt, asn1Spec = AS_REP())[0]
     except:
         decodedTGT = decoder.decode(tgt, asn1Spec = TGS_REP())[0]
-    LOG.info('Domain in getKerberosTGS is: %s' % domain.upper())
     domain = domain.upper()
     # Extract the ticket from the TGT
     ticket = Ticket()
@@ -479,7 +478,9 @@ def getKerberosTGS(serverName, domain, kdcHost, tgt, cipher, sessionKey, renew =
     res = decoder.decode(r, asn1Spec = TGS_REP())[0]
     spn = Principal()
     spn.from_asn1(res['ticket'], 'realm', 'sname')
-
+    LOG.info('SPN Components [0]: %s' % spn.components[0])
+    LOG.info('Servername Components [0]: %s' % serverName.components[0])
+    LOG.info('SPN Components [1]: %s' % spn.components[1])
     if spn.components[0] == serverName.components[0]:
         # Yes.. bye bye
         return r, cipher, sessionKey, newSessionKey
