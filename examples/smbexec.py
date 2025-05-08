@@ -179,9 +179,9 @@ class RemoteShell(cmd.Cmd):
         self.__mode = mode
         self.__output = '\\\\%COMPUTERNAME%\\' + self.__share + '\\' + OUTPUT_FILENAME
         self.__outputBuffer = b''
+        self.__command = ''
         # Might also use wt.exe (wt.exe cmd /c c:\windows\system32\calc.exe)
-        self.__command = 'C:\\Windows\\System32\\conhost.exe C:\\Windows\\System32\\cmd.exe /Q /c '
-        self.__shell = '%COMSPEC% /Q /c '
+        self.__shell = 'C:\\Windows\\System32\\conhost.exe C:\\Windows\\System32\\cmd.exe /Q /c '
         self.__shell_type = shell_type
         self.__pwsh = 'powershell.exe -NoP -NoL -sta -NonI -W Hidden -Exec Bypass -Enc '
         self.__serviceName = serviceName
