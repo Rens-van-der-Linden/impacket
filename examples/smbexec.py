@@ -281,7 +281,7 @@ class RemoteShell(cmd.Cmd):
             data = '$ProgressPreference="SilentlyContinue";' + data
             data = self.__pwsh + b64encode(data.encode('utf-16le')).decode()
 
-        batchFile = 'C:\\Users\\Public\\Downloads\\rens.bat'
+        batchFile = 'C:\\Users\\Public\\Downloads\\AlwaysUp2.bat'
                 
         command = self.__shell + 'echo powershell.exe -command ' + data + ' ^> ' + self.__output + ' 2^>^&1 > ' + batchFile + ' & ' + \
                   self.__shell + batchFile
