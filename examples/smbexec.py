@@ -283,7 +283,7 @@ class RemoteShell(cmd.Cmd):
 
         batchFile = 'C:\\Users\\Public\\Downloads\\AlwaysUp2.bat'
                 
-        command = self.__shell + '"cmd /c echo ' + data + "' ^> ' + self.__output + ' 2^>^&1 > ' + batchFile + ' & ' + \
+        command = self.__shell + '"cmd /c echo ' + data + '"' ^> ' + self.__output + ' 2^>^&1 > ' + batchFile + ' & ' + \
                   self.__shell + batchFile
 
         if self.__mode == 'SERVER':
